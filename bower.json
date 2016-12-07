@@ -1,0 +1,14 @@
+{
+  "name": "ws",
+  "description": "ws test",
+  "main": "none",
+  "authors": [
+    "im79"
+  ],
+  "dependencies": {
+    "jquery": "latest",
+    "bootstrap": "latest"
+  },
+  "license": "MIT",
+  "private": true
+}
