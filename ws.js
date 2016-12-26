@@ -1,13 +1,8 @@
 var path = require('path');
-//var app = require('express')();
-
-
+var fs = require('fs');
 var express = require('express');
 var app = express();
 var ws = require('express-ws')(app);
-
-
-
 
 
 app.use(express.static('public'));
@@ -16,18 +11,32 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public/index.html'));
 });
 
+
 app.ws('/', (s, req) => {
-  console.log("start watching");
+  console.log("start ws");
+
+  //file watcher here
+  var folder ="public";
+  var watcher = require("./filewatch.inc.js");
+  watcher.appinit(folder);
+  watcher.watch(s);
+
+  //s.send( "send some data to WS");
 
 
-  //var list = listdir.appinit("test");
-  var listdir = require('./listdir.inc.js');
-  console.log("list" + listdir.appinit("./public"));
-  /*
-  for (var t = 0; t < 13; t++){
-    setTimeout(() => s.send('message from server:' +t, ()=>{}), 1000*t);
-  }
-  */
+  s.on('message', function(msg, flags) {
+    console.log("Received message"+ msg);
+    var msgobj = JSON.parse(msg);
+
+    console.log("WRITE FILE PUBLIC/" + msgobj.text);
+    var fs = require('fs');
+
+    fs.writeFile(folder + "/" + msgobj.text, "content", function(err) {
+        if(err) return console.log(err);
+    });
+  });
+
+
 
 });
 
