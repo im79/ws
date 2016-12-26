@@ -25,18 +25,16 @@ app.ws('/', (s, req) => {
 
 
   s.on('message', function(msg, flags) {
-    console.log("Received message"+ msg);
+    //console.log("Received message"+ msg);
     var msgobj = JSON.parse(msg);
 
-    console.log("WRITE FILE PUBLIC/" + msgobj.text);
-    var fs = require('fs');
+    //console.log("WRITE FILE PUBLIC/" + msgobj.text);
 
     fs.writeFile(folder + "/" + msgobj.text, "content", function(err) {
         if(err) return console.log(err);
     });
+
   });
-
-
 
 });
 
